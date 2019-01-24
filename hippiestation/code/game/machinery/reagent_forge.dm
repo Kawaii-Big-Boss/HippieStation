@@ -23,9 +23,10 @@
 
 
 /obj/machinery/reagent_forge/Initialize()
-	. = ..()
 	AddComponent(/datum/component/material_container, list(MAT_REAGENT), 200000)
 	stored_research = new /datum/techweb/specialized/autounlocking/reagent_forge
+	.=..()
+
 
 /obj/machinery/reagent_forge/attackby(obj/item/I, mob/user)
 
@@ -128,8 +129,8 @@
 	var/list/data = list()
 	var/lowest_cost = 1
 
-	for(var/v in stored_research.researched_designs)
-		var/datum/design/forge/D = SSresearch.techweb_design_by_id(v)
+	for(var/V in stored_research.researched_designs)
+		var/datum/design/forge/D = stored_research.researched_designs[V]
 		var/md5name = md5(D.name)
 		var/cost = D.materials[MAT_REAGENT]*efficiency
 		if(!listofrecipes[md5name])
@@ -157,8 +158,8 @@
 			if(amount <= 0)
 				return FALSE
 
-			for(var/v in stored_research.researched_designs)
-				var/datum/design/forge/D = SSresearch.techweb_design_by_id(v)
+			for(var/V in stored_research.researched_designs)
+				var/datum/design/forge/D = stored_research.researched_designs[V]
 				if(D.name == params["name"])
 					create_product(D, amount, usr)
 					return TRUE
